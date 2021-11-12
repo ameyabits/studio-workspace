@@ -1,0 +1,4 @@
+1. It  act as a http server and trigges flow when it receives http request.
+2. Different methods can be used like GET, PUT, POST, PATCH, DELETE.
+3. Http body act as a payload and http data as attributes( headers, Query Parameters and so on)
+4. As HTTP Listener acts as a server, so we have to specify the protocol for communication like http, https. We also need to specify host and port.
