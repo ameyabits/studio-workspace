@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<wsc:config name="Web_Service_Consumer_Config2" doc:name="Web Service Consumer Config" doc:id="38a5ca2d-228c-4a61-81a8-84f25f8e5ff9" >
+		<wsc:connection wsdlLocation="http://www.dneonline.com/calculator.asmx?wsdl" service="Calculator" port="CalculatorSoap12" address="http://www.dneonline.com/calculator.asmx" />
+	</wsc:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e7f51c19-4516-4f25-a3e1-c09e1742e33e" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule_soap_webservicecallFlow" doc:id="16823e53-5539-421d-8069-00a19a0c7f18" >
+		<http:listener doc:name="Listen to the request from postman" doc:id="903923f9-666b-49d1-af0e-fc5813abecd1" config-ref="HTTP_Listener_config" path="thisIsBasePath"/>
+		<scatter-gather doc:name="Accept values parallely" doc:id="98d31a5e-e12d-4b1f-862d-54c57b312e42" >
+			<route >
+				<set-variable value="#[attributes.queryParams.var2]" doc:name="var2" doc:id="8077fb9a-3ff8-4285-ac9d-33d895a33b95" variableName="var2"/>
+			</route>
+			<route >
+				<set-variable value="#[attributes.queryParams.var1]" doc:name="var1" doc:id="2db713f1-6e4d-4f7f-90a9-54efd10f74bd" variableName="var1"/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="46c3d3ca-c97e-4416-a357-bffe82cb6f79" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://tempuri.org/
+---
+{
+	ns0#Add: {
+		ns0#intA: vars.var1 as Number,
+		ns0#intB: vars.var2 as Number pow 2
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="callCalculatorWebService" doc:id="86654833-5228-442a-ba02-875a08e013fa" config-ref="Web_Service_Consumer_Config2" operation="Add"/>
+		<set-payload value="#[payload.body.AddResponse.AddResult]" doc:name="set webservice response as output" doc:id="7ab82fdd-9ef9-4d96-b483-b3d81802f9d2" />
+	</flow>
+</mule>
