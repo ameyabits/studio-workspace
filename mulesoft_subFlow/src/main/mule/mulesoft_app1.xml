@@ -7,8 +7,11 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="9ea3d299-a385-4126-8540-dabff391f4f0" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<flow name="LogMessage" doc:id="d2da3e2d-1568-4ec5-9388-5dd92e245a0b" >
-		<http:listener doc:name="Listener" doc:id="71ba60fd-f52f-4f53-a315-91e58a40b775" config-ref="HTTP_Listener_config" path="app1"/>
-		<logger level="INFO" doc:name="Logger" doc:id="7f989753-ec4b-4aac-8140-abda469ad619" message="Mulesoft_test_app1"/>
+	<flow name="mulesoft_app1Flow" doc:id="febff95b-f2c0-4acd-8fa3-851704221f94" >
+		<http:listener doc:name="Listener" doc:id="af61a545-c995-4505-8ecd-2859d4064575" config-ref="HTTP_Listener_config" path="subFlow"/>
+		<flow-ref doc:name="Flow Reference" doc:id="be207e7b-c3a7-4047-bae8-970cfc057c8d" name="mulesoft_app1Flow1"/>
+	</flow>
+	<flow name="mulesoft_app1Flow1" doc:id="0f158498-e3d8-4d10-921f-6e3fe0552bc7" >
+		<logger level="INFO" doc:name="Logger" doc:id="0304dd5b-cf93-4670-ad5d-e70a5523782f" message="referenced flow service executed"/>
 	</flow>
 </mule>
