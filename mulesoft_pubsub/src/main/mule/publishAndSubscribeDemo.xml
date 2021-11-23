@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="Publish_Customer_Data" doc:id="9b0662dd-c3af-463c-892d-96dfcdbb43d1" >
+		<http:listener doc:name="Receive Customer Info" doc:id="b2328209-d8b8-4f27-9c09-f3b97b8fa0ce" path="GetCustomerData" config-ref="HTTP_Listener_config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="49ebbfdd-926f-4582-a9a7-02275229085e" message="before publish"/>
+		<vm:publish doc:name="Publish Customer Data" doc:id="00b2e2f5-a41d-4ae7-913e-2ce175e43314" queueName="customerQueue" config-ref="CustomerQueue"/>
+		<logger level="INFO" doc:name="Logger" doc:id="4e21012d-47ef-4ca6-8c37-c7331917b131" message="After Publish"/>
+	</flow>
+	<flow name="Subscribe_Customer_Data" doc:id="a34b3219-5360-4c7f-9c3b-566b30babfc7" >
+		<vm:listener queueName="customerQueue" doc:name="Subscribe Customer Data" doc:id="02070c08-9e44-4f7a-a2a8-71334ae0ce09" config-ref="CustomerQueue"/>
+		<logger level="INFO" doc:name="Log Payload " doc:id="b028dbde-e673-41ff-a159-11547dc2b3d0" message="#[payload]"/>
+	</flow>
+</mule>

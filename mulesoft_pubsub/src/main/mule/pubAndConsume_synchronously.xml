@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<flow name="pubAndConsume_synchronouslyFlow" doc:id="ce12db48-540e-475a-b011-0db76edc066a" >
+		<http:listener doc:name="Listener" doc:id="b1f22a36-3933-499a-b817-d5f0e4d45c99" config-ref="HTTP_Listener_config" path="publishAndConsume_sync"/>
+		<logger level="INFO" doc:name="Logger" doc:id="98439322-9430-413f-b16b-c3c54ceb1ed1" message="Before Publish"/>
+		<vm:publish-consume queueName="CustomerQueueForPubConsume" doc:name="Publish consume" doc:id="490d769d-4116-47d5-9802-30d9b57e6530" config-ref="CustomerQueueForPubConsume"/>
+		<logger level="INFO" doc:name="Logger" doc:id="66d5794f-68f4-440e-ba98-49ed86f6c85d" message="After Publish"/>
+	</flow>
+	<flow name="pubAndConsume_synchronouslyFlow1" doc:id="4f017103-7076-4a5b-8702-2dbc7879687e" >
+		<vm:listener doc:name="Listener" doc:id="9cb4470f-ae2c-4a94-aa21-11144b482c14" config-ref="CustomerQueueForPubConsume" queueName="CustomerQueueForPubConsume"/>
+		<logger level="INFO" doc:name="Log Payload" doc:id="79f66dba-6d4f-43b3-9876-f660cceebcc1" message="#[payload]"/>
+	</flow>
+</mule>
