@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<flow name="mulesoft_filepollingFlow" doc:id="594b84d6-e6df-426b-9f9d-8e67f1d26a83" >
+		<file:listener doc:name="On New or Updated File" doc:id="289654e9-fb13-40c7-af39-072ccfdf4b91" config-ref="FilePollingConfig" recursive="false" watermarkMode="CREATED_TIMESTAMP" autoDelete="true" moveToDirectory="C:\Users\ameya.andurekar\Desktop\TestWork\Mulesoft\FilePolling\Output">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="dc2e36c0-a094-4fac-8888-2ef24ffa750e" message="#[payload]"/>
+	</flow>
+</mule>

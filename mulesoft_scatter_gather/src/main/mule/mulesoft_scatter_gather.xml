@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ade0c8d6-241d-43d2-82ad-2841febd329a" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mulesoft_scatter_gatherFlow" doc:id="d8e3c339-5721-4327-9fa0-4a56d4da46ae" >
+		<http:listener doc:name="Listener" doc:id="aa778daf-cec1-451a-961f-7643b13e6526" config-ref="HTTP_Listener_config" path="ScatterGather"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="94ce5875-5db1-48b9-8a6b-69c30bdd6998" >
+			<route >
+				<logger level="INFO" doc:name="Logger" doc:id="8267d550-3046-4a36-98f2-266afead40fc" message="first logger"/>
+			</route>
+			<route >
+				<logger level="INFO" doc:name="Logger" doc:id="7a908103-a834-41b3-a5c4-447d68380fa3" message="second logger"/>
+			</route>
+		</scatter-gather>
+	</flow>
+</mule>

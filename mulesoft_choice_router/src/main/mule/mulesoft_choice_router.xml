@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="mulesoft_choice_routerFlow" doc:id="156e742f-3a7e-42f2-b102-bc7b50abca2f" >
+		<http:listener doc:name="Listener" doc:id="45cdd119-494d-4eb2-ad2d-560f18edb977" config-ref="HTTP_Listener_config" path="choiceRouterSimple"/>
+		<ee:transform doc:name="Transform Message" doc:id="4900cedb-7482-4734-91b7-56f5d0b6d1a2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="2cf33f32-3c24-4494-9716-575b96b2dcbf" >
+			<when expression='#[payload.gender=="male"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="48f429c3-cc50-4cd9-9abf-b551732d6182" message="employee is a male"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="8a2ca68d-0d03-44a8-850e-cfbc6096760c" message="employee is not a male"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
